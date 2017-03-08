@@ -139,7 +139,12 @@ class Demo2 extends Component {
     }
     render () {
         const { data, commonData } = this.state;
-        console.log(data);
+        data.forEach(function (item, index) {
+            data.key = index;
+        });
+        commonData.forEach(function (item, index) {
+            commonData.key = index;
+        });
         return (
             <Row>
                 <Col md={10} mdOffset={1}>
