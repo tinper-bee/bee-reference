@@ -8,48 +8,232 @@
 const TreeNode = Tree.TreeNode;
 
 const staticdata = {
-    leaf1: [
-      { a: '令狐冲', b: '男', c: 41, key: '1' },
-      { a: '杨过', b: '男', c: 67, key: '2' },
-      { a: '郭靖', b: '男', c: 25, key: '3' },
+    "1001A11000000000SVW0": [
+    {
+      "planpriority": "",
+      "pk_org": "0001A110000000000BSR",
+      "refcode": "PM201604050020",
+      "pk_group": "0001A110000000000BSR",
+      "refname": "市场拓展费",
+      "pk_eps": "null",
+      "pk_workcalendar": "",
+      "refpk": "1001A11000000000SXPP",
+      "project_sh_name": "",
+      "planmodel": "",
+      "refjoin": "null"
+    },
+    {
+      "planpriority": "",
+      "pk_org": "0001A110000000000BSR",
+      "refcode": "PM201604050021",
+      "pk_group": "0001A110000000000BSR",
+      "refname": "零星客户",
+      "pk_eps": "null",
+      "pk_workcalendar": "",
+      "refpk": "1001A11000000000SXPS",
+      "project_sh_name": "",
+      "planmodel": "",
+      "refjoin": "null"
+    }
   ],
-  leaf2: [
-    { a: '孙尚香', b: '男', c: 41, key: '1' },
-    { a: '刘备', b: '男', c: 67, key: '2' },
-    { a: '曹操', b: '男', c: 25, key: '3' },
-    ],
-    leaf3: [
-      { a: '卢俊义', b: '男', c: 41, key: '1' },
-      { a: '孙二娘', b: '男', c: 67, key: '2' },
-      { a: '武大郎', b: '男', c: 25, key: '3' },
-    ]
-}
+  "1001A11000000000SVX6": [
+    {
+      "planpriority": "",
+      "pk_org": "0001A110000000000BSR",
+      "refcode": "PM201604050020",
+      "pk_group": "0001A110000000000BSR",
+      "refname": "市场拓展费2",
+      "pk_eps": "null",
+      "pk_workcalendar": "",
+      "refpk": "1001A11000000000SXPP",
+      "project_sh_name": "",
+      "planmodel": "",
+      "refjoin": "null"
+    },
+    {
+      "planpriority": "",
+      "pk_org": "0001A110000000000BSR",
+      "refcode": "PM201604050021",
+      "pk_group": "0001A110000000000BSR",
+      "refname": "零星客户2",
+      "pk_eps": "null",
+      "pk_workcalendar": "",
+      "refpk": "1001A11000000000SXPS",
+      "project_sh_name": "",
+      "planmodel": "",
+      "refjoin": "null"
+    }
+],
+"1001A11000000000SVD6": [
+  {
+    "planpriority": "",
+    "pk_org": "0001A110000000000BSR",
+    "refcode": "PM201604050020",
+    "pk_group": "0001A110000000000BSR",
+    "refname": "市场拓展费3",
+    "pk_eps": "null",
+    "pk_workcalendar": "",
+    "refpk": "1001A11000000000SXPP",
+    "project_sh_name": "",
+    "planmodel": "",
+    "refjoin": "null"
+  },
+  {
+    "planpriority": "",
+    "pk_org": "0001A110000000000BSR",
+    "refcode": "PM201604050021",
+    "pk_group": "0001A110000000000BSR",
+    "refname": "零星客户3",
+    "pk_eps": "null",
+    "pk_workcalendar": "",
+    "refpk": "1001A11000000000SXPS",
+    "project_sh_name": "",
+    "planmodel": "",
+    "refjoin": "null"
+  }
+]
+};
+
+const treeData = [
+    {
+      "id": "1001A11000000000SMAB",
+      "name": "规费及其他",
+      "pid": "null",
+      "refpk": "1001A11000000000SMAB",
+      "children": [
+          {
+            "id": "1001A11000000000SVW0",
+            "name": "内部规费",
+            "pid": "1001A11000000000SMAB",
+            "refpk": "1001A11000000000SVW0"
+          },
+          {
+            "id": "1001A11000000000SVX6",
+            "name": "外部规费",
+            "pid": "1001A11000000000SMAB",
+            "refpk": "1001A11000000000SVX6"
+          }
+      ]
+    },
+    {
+      "id": "1001A11000000000SVJY",
+      "name": "业务招待费",
+      "pid": "null",
+      "refpk": "1001A11000000000SVJY",
+      "children": [
+          {
+            "id": "1001A11000000000SVD6",
+            "name": "宣传品",
+            "pid": "1001A11000000000SVD5",
+            "refpk": "1001A11000000000SVD6"
+          },
+          {
+            "id": "1001A11000000000SVD7",
+            "name": "随附品",
+            "pid": "1001A11000000000SVD5",
+            "refpk": "1001A11000000000SVD7"
+          }
+      ]
+    },
+    {
+      "id": "1001A11000000000SVRZ",
+      "name": "费用类",
+      "pid": "1001A11000000000SVJY",
+      "refpk": "1001A11000000000SVRZ"
+    },
+    {
+      "id": "1001A11000000000SVS0",
+      "name": "业务用酒",
+      "pid": "1001A11000000000SVJY",
+      "refpk": "1001A11000000000SVS0"
+    },
+
+    {
+      "id": "1001A11000000000SVS4",
+      "name": "工薪类",
+      "pid": "1001A11000000000SVJZ",
+      "refpk": "1001A11000000000SVS4",
+      "children": [
+          {
+            "id": "1001A11000000000SVJZ",
+            "name": "工资及附加",
+            "pid": "null",
+            "refpk": "1001A11000000000SVJZ"
+          },
+          {
+            "id": "1001A11000000000SVBN",
+            "name": "工资代扣项",
+            "pid": "1001A11000000000SMAB",
+            "refpk": "1001A11000000000SVBN"
+          }
+      ]
+    },
+    {
+      "id": "1001A11000000000SVS5",
+      "name": "社保类",
+      "pid": "1001A11000000000SVJZ",
+      "refpk": "1001A11000000000SVS5",
+      "children": [
+          {
+            "id": "1001A11000000000SVS7",
+            "name": "代扣代缴",
+            "pid": "1001A11000000000SVJZ",
+            "refpk": "1001A11000000000SVS7"
+          },
+      ]
+    },
+    {
+      "id": "1001A11000000000SVD5",
+      "name": "低值易耗品项目",
+      "pid": "null",
+      "refpk": "1001A11000000000SVD5"
+    },
+    {
+      "id": "1001A11000000000SVK0",
+      "name": "生产成本项目",
+      "pid": "null",
+      "refpk": "1001A11000000000SVK0"
+    },
+    {
+      "id": "1001A11000000000SVK2",
+      "name": "工程项目",
+      "pid": "null",
+      "refpk": "1001A11000000000SVK2"
+    },
+    {
+      "id": "1001A11000000000SVK7",
+      "name": "工程合同",
+      "pid": "null",
+      "refpk": "1001A11000000000SVK7"
+    }
+  ]
 
 class Demo1 extends Component {
     constructor(props){
         super(props);
         this.state = {
             show: false,
-            data: staticdata.leaf1,
+            data: staticdata["1001A11000000000SVW0"],
             commonData: [],
             selectValue: "",
             inputValue: ""
         };
         this.commonColumns = [
-          { title: '用户名', dataIndex: 'a', key: 'a', width: 100 },
-          { id: '123', title: '性别', dataIndex: 'b', key: 'b', width: 100 },
-          { title: '年龄', dataIndex: 'c', key: 'c', width: 200 },
-          {
-            title: '操作', dataIndex: '', key: 'd', render: this.renderAdd.bind(this),
-          },
-        ];
-        this.columns = [
-          { title: '用户名', dataIndex: 'a', key: 'a', width: 100 },
-          { id: '123', title: '性别', dataIndex: 'b', key: 'b', width: 100 },
-          { title: '年龄', dataIndex: 'c', key: 'c', width: 200 },
+          { title: '项目编码', dataIndex: 'refcode', key: 'refcode' },
+          { title: '项目名称', dataIndex: 'refname', key: 'refname' },
+          { title: '项目简称', dataIndex: 'pk_eps', key: 'pk_eps', render: this.changeHeight.bind(this)},
           {
             title: '操作', dataIndex: '', key: 'd', render: this.renderDelete.bind(this),
           },
+
+        ];
+        this.columns = [
+            { title: '项目编码', dataIndex: 'refcode', key: 'refcode' },
+            { title: '项目名称', dataIndex: 'refname', key: 'refname' },
+            { title: '项目简称', dataIndex: 'pk_eps', key: 'pk_eps'},
+            {
+              title: '操作', dataIndex: '', key: 'd', render: this.renderAdd.bind(this),
+            },
         ];
         this.renderAdd = this.renderAdd.bind(this);
         this.renderDelete = this.renderDelete.bind(this);
@@ -60,6 +244,9 @@ class Demo1 extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.onDataSelect = this.onDataSelect.bind(this);
         this.ensure = this.ensure.bind(this);
+    }
+    changeHeight (text, record, index) {
+        return <div style={{ height: 50, lineHeight: 50 }}>{text}</div>
     }
     renderAdd (text, record, index) {
         return <span style={{ cursor: 'pointer' }} onClick={this.handleAdd(record)}><Icon type="uf-plus"></Icon>添加到常用</span>;
@@ -73,8 +260,7 @@ class Demo1 extends Component {
           </Popconfirm>;
     }
     onSelect(selectedKeys, info) {
-        console.log(/leaf/.test(selectedKeys[0]));
-        if(/leaf/.test(selectedKeys[0])){
+        if(staticdata[selectedKeys[0]]){
             this.setState({
                 data: staticdata[selectedKeys[0]]
             });
@@ -82,7 +268,7 @@ class Demo1 extends Component {
     }
     onDataSelect (record, index) {
         this.setState({
-            selectValue: record.a
+            selectValue: record.refname
         })
     }
     handleAdd (record) {
@@ -121,9 +307,28 @@ class Demo1 extends Component {
             show: false
         })
     }
+    setClassName (record, index, indent) {
+        console.log(record, index);
+        console.log(indent);
+    }
     render () {
         const { data, commonData } = this.state;
-        console.log(data);
+        data.forEach(function (item, index) {
+            data.key = index;
+        });
+        commonData.forEach(function (item, index) {
+            commonData.key = index;
+        });
+        const loop = data => data.map((item) => {
+             if (item.children) {
+               return (
+                 <TreeNode key={item.id} title={<span><Icon type="uf-treefolder"></Icon>{item.name}</span>}>
+                   {loop(item.children)}
+                 </TreeNode>
+               );
+             }
+             return <TreeNode key={item.id} title={<span><Icon type="uf-box-o-2"></Icon>{item.name}</span>} />;
+           });
         return (
             <Row>
                 <Col md={10} mdOffset={1}>
@@ -148,7 +353,7 @@ class Demo1 extends Component {
                    <TabPane tab="常用" key="1">
                        <Table
                        onRowClick = { this.onDataSelect }
-                       columns={this.columns}
+                       columns={this.commonColumns}
                        data={commonData}
                        />
                    </TabPane>
@@ -159,21 +364,14 @@ class Demo1 extends Component {
                            <Tree
                               onSelect={this.onSelect}
                             >
-                              <TreeNode title="parent 1" key="0-0">
-                                <TreeNode title="parent 1-0" key="0-0-0">
-                                  <TreeNode title="leaf1" key="leaf1" />
-                                  <TreeNode title="leaf2" key="leaf2" />
-                                </TreeNode>
-                                <TreeNode title="parent 1-1" key="0-0-1">
-                                  <TreeNode title={<span style={{ color: '#08c' }}>sss</span>} key="leaf3" />
-                                </TreeNode>
-                              </TreeNode>
+                              {loop(treeData)}
                             </Tree>
                            </Col>
                            <Col md={8}>
                                <Table
+                               rowClassName = { this.setClassName }
                                onRowClick = { this.onDataSelect }
-                               columns={this.commonColumns}
+                               columns={this.columns}
                                data={data}
                                />
                            </Col>
