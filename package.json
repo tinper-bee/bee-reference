@@ -1,0 +1,58 @@
+{
+  "name": "bee-reference",
+  "version": "0.0.1",
+  "description": "Reference ui component for react",
+  "keywords": [
+    "react",
+    "react-component",
+    "bee-reference",
+    "iuap-design",
+    "tinper-bee",
+    "Reference"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/tinper-bee/bee-reference.git",
+  "author": "Yonyou FED",
+  "repository": "http://github.com/tinper-bee/bee-reference",
+  "bugs": "https://github.com/tinper-bee/bee-reference.git/issues",
+  "license": "MIT",
+  "main": "./build/index.js",
+  "config": {
+    "port": 3000
+  },
+  "scripts": {
+    "dev": "bee-tools run start",
+    "build": "bee-tools run build",
+    "lint": "bee-tools run lint",
+    "test": "bee-tools run test",
+    "chrome": "bee-tools run chrome",
+    "coveralls": "bee-tools run coverage",
+    "browsers": "bee-tools run browsers",
+    "pub": "bee-tools run pub"
+  },
+  "dependencies": {
+    "bee-modal": "^0.2.4",
+    "bee-table": "^0.2.0",
+    "bee-tree": "^0.1.0",
+    "classnames": "^2.2.5",
+    "rc-tabs": "^7.3.0",
+    "tinper-bee": "^0.3.12",
+    "tinper-bee-core": "latest"
+  },
+  "devDependencies": {
+    "bee-button": "latest",
+    "bee-control-label": "^0.1.6",
+    "bee-form-control": "^0.1.7",
+    "bee-layout": "latest",
+    "bee-panel": "latest",
+    "chai": "^3.5.0",
+    "console-polyfill": "~0.2.1",
+    "enzyme": "^2.4.1",
+    "es5-shim": "~4.1.10",
+    "react": "15.3.2",
+    "react-addons-test-utils": "15.3.2",
+    "react-dom": "15.3.2"
+  }
+}
