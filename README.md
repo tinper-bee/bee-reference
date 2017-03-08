@@ -17,12 +17,18 @@
 
 react bee-reference component for tinper-bee
 
-some description...
+参照组件 `bee-reference`，支持固定格式的数据进行模式化选择。
 
 ## 使用方法
 
 ```js
+$ yarn add bee-reference
+```
 
+```
+import Reference from 'bee-reference'
+
+ReactDOM.render(<Reference />, appRoot)
 ```
 
 
@@ -31,8 +37,9 @@ some description...
 
 |参数|说明|类型|默认值|
 |:--|:---:|:--:|---:|
+| | | | |
 
-#### 开发调试
+## 开发调试
 
 ```sh
 $ npm install -g bee-tools
