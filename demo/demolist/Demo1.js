@@ -7,6 +7,8 @@
 
 const TreeNode = Tree.TreeNode;
 
+
+
 const staticdata = {
     "1001A11000000000SVW0": [
     {
@@ -94,7 +96,7 @@ const staticdata = {
 ]
 };
 
-let treeData = [
+let treedata = [
   {
     "id": "0039FB6F-7E72-455D-A7A3-189B6A5698F5",
     "code": "0301",
@@ -3086,6 +3088,7 @@ let treeData = [
   }
 ];
     let array = [];
+let treeData = treedata.slice();
 treeData.forEach(function (item, index){
     if(item.pid == ""){
         item.key = item.id;
@@ -3100,7 +3103,6 @@ array.forEach(function (item) {
 })
 
 function lint(obj){
-    console.log(obj);
     treeData.forEach(function (item, index){
         if(item.pid == obj.id){
             if(!obj.children){
@@ -3135,6 +3137,22 @@ function lint(obj){
 //     }
 // });
 
+const getParentKey = (key, tree) => {
+  let parentKey;
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i];
+    if (node.children) {
+      if (node.children.some(item => item.key === key)) {
+        parentKey = node.key;
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children);
+      }
+    }
+  }
+  return parentKey;
+};
+
+
 class Demo1 extends Component {
     constructor(props){
         super(props);
@@ -3142,15 +3160,21 @@ class Demo1 extends Component {
             show: false,
             data: staticdata["1001A11000000000SVW0"],
             commonData: [],
-            selectValue: "",
-            inputValue: ""
+            selectValue: [],
+            inputValue: [],
+            activePage: 1,
+            expandedKeys: [],
+            treeSearchValue: '',
+            tableSearchValue: '',
+            autoExpandParent: true,
+            tableSearchData: [],
         };
         this.commonColumns = [
           { title: '项目编码', dataIndex: 'refcode', key: 'refcode' },
           { title: '项目名称', dataIndex: 'refname', key: 'refname' },
           { title: '项目简称', dataIndex: 'pk_eps', key: 'pk_eps', render: this.changeHeight.bind(this)},
           {
-            title: '操作', dataIndex: '', key: 'd', render: this.renderDelete.bind(this),
+            title: '操作', dataIndex: '', key: 'refpk', render: this.renderDelete.bind(this),
           },
 
         ];
@@ -3159,7 +3183,7 @@ class Demo1 extends Component {
             { title: '项目名称', dataIndex: 'refname', key: 'refname' },
             { title: '项目简称', dataIndex: 'pk_eps', key: 'pk_eps'},
             {
-              title: '操作', dataIndex: '', key: 'd', render: this.renderAdd.bind(this),
+              title: '操作', dataIndex: '', key: 'refpk', render: this.renderAdd.bind(this),
             },
         ];
         this.renderAdd = this.renderAdd.bind(this);
@@ -3171,6 +3195,12 @@ class Demo1 extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.onDataSelect = this.onDataSelect.bind(this);
         this.ensure = this.ensure.bind(this);
+        this.deleteSelect = this.deleteSelect.bind(this);
+        this.empty = this.empty.bind(this);
+        this.handlePageSelect = this.handlePageSelect.bind(this);
+        this.handleTreeSearch = this.handleTreeSearch.bind(this);
+        this.handleTableSearch = this.handleTableSearch.bind(this);
+
     }
     changeHeight (text, record, index) {
         return <div style={{ height: 50, lineHeight: 50 }}>{text}</div>
@@ -3179,7 +3209,7 @@ class Demo1 extends Component {
         return <span style={{ cursor: 'pointer' }} onClick={this.handleAdd(record)}><Icon type="uf-plus"></Icon>添加到常用</span>;
     }
     renderDelete (text, record, index) {
-         return <Popconfirm content="确认删除?" onClose={this.handleDelete(index)}>
+         return <Popconfirm content="确认删除?" onClick={e=>e.stopPropagation()} onClose={this.handleDelete(index)}>
             <span>
             <Icon type="uf-del"></Icon>
             删除
@@ -3194,18 +3224,21 @@ class Demo1 extends Component {
         }
     }
     onDataSelect (record, index) {
+        let array = this.state.selectValue;
+        array.push(record.refname);
         this.setState({
-            selectValue: record.refname
+            selectValue: array
         })
     }
     handleAdd (record) {
         const self = this;
-        return function () {
+        return function (e) {
             let data = self.state.commonData;
             data.push(record);
             self.setState({
                 commonData: data
-            })
+            });
+            e.stopPropagation();
         }
     }
     handleDelete (index) {
@@ -3228,29 +3261,94 @@ class Demo1 extends Component {
             show: false
         })
     }
+    empty () {
+        this.setState({
+            selectValue: []
+        })
+    }
     ensure () {
         this.setState({
             inputValue: this.state.selectValue,
             show: false
         })
     }
+    deleteSelect (index){
+        const self = this;
+        return function () {
+            let array = self.state.selectValue;
+            array.splice(index, 1);
+            self.setState({
+                selectValue: array
+            })
+        }
+    }
+    handlePageSelect(eventKey) {
+	    this.setState({
+	      activePage: eventKey
+	    });
+	}
+    onExpand = (expandedKeys) => {
+       this.setState({
+         expandedKeys,
+         autoExpandParent: false,
+       });
+     }
+    handleTreeSearch(e) {
+        const value = e.target.value;
+            const expandedKeys = treedata.map((item) => {
+              if (item.name.indexOf(value) > -1) {
+                return getParentKey(item.key, array);
+              }
+              return null;
+            }).filter((item, i, self) => item && self.indexOf(item) === i);
+            this.setState({
+              expandedKeys,
+              treeSearchValue: value,
+              autoExpandParent: true,
+            });
+    }
+    handleTableSearch(e){
+        const value = e.target.value;
+        let data = this.state.data;
+        let searchData = [];
+        data = data.forEach(function (item, index) {
+            if(item.refname.indexOf(value) > -1){
+                searchData.push(item);
+            }
+        });
+        this.setState({
+            tableSearchValue: value,
+            tableSearchData: searchData
+        });
+    }
     render () {
-        const { data, commonData } = this.state;
+        const { data, commonData, treeSearchValue } = this.state;
+        const self = this;
         data.forEach(function (item, index) {
-            data.key = index;
+            item.key = index;
         });
         commonData.forEach(function (item, index) {
-            commonData.key = index;
+            item.key = index;
         });
         const loop = data => data.map((item) => {
+            const index = item.name.search(treeSearchValue);
+             const beforeStr = item.name.substr(0, index);
+             const afterStr = item.name.substr(index + treeSearchValue.length);
+             const title = index > -1 ? (
+               <span>
+                 {beforeStr}
+                 <span style={{ color: '#f50' }}>{treeSearchValue}</span>
+                 {afterStr}
+               </span>
+           ) : <span>{item.name}</span>;
              if (item.children) {
                return (
-                 <TreeNode key={item.id} title={<span><Icon type="uf-treefolder"></Icon>{item.name}</span>}>
+                 <TreeNode key={item.id} title={<span><Icon type="uf-treefolder"></Icon>{title}</span>}>
                    {loop(item.children)}
                  </TreeNode>
                );
              }
-             return <TreeNode key={item.id} title={<span><Icon type="uf-box-o-2"></Icon>{item.name}</span>} />;
+             return <TreeNode key={item.id} title={<span><Icon type="uf-box-o-2"></Icon>{title}</span>} />;
            });
         return (
             <Row>
@@ -3258,7 +3356,9 @@ class Demo1 extends Component {
                     <FormGroup>
                         <Label>参照例子</Label>
                         <FormControl
-                        value={this.state.inputValue}
+                        value={this.state.inputValue.map(function (item, index) {
+                            return item;
+                        })}
                         onClick={this.handleFocus}
                         />
                     </FormGroup>
@@ -3284,19 +3384,52 @@ class Demo1 extends Component {
                    <TabPane tab="参照" key="2">
                        <div>
                            <Col md={3}>
-                           <Tree
-                              onSelect={this.onSelect}
-                            >
-                              {loop(array)}
-                            </Tree>
+                           <div style={{ height: 500, overflow: 'auto' }}>
+                           <InputGroup simple style={{left: 20, top: 5 }}>
+                               <FormControl type="text" onChange={ this.handleTreeSearch }/>
+                               <InputGroup.Button>
+                                   <Icon type="uf-search"></Icon>
+                               </InputGroup.Button>
+                           </InputGroup>
+                               <Tree
+                                  onSelect={this.onSelect}
+                                  onExpand={this.onExpand}
+                                  expandedKeys={this.state.expandedKeys}
+                                  autoExpandParent={this.state.autoExpandParent}
+                                >
+                                  {loop(array)}
+                                </Tree>
+                           </div>
+
                            </Col>
                            <Col md={8}>
-                               <Table
-                               rowClassName = { this.setClassName }
-                               onRowClick = { this.onDataSelect }
-                               columns={this.columns}
-                               data={data}
-                               />
+                           <Row>
+                                <Col md={12}>
+                                    <InputGroup simple style={{ float: 'right', margin: 5 }}>
+                                        <FormControl type="text" onChange={this.handleTableSearch} />
+                                        <InputGroup.Button>
+                                            <Icon type="uf-search"></Icon>
+                                        </InputGroup.Button>
+                                    </InputGroup>
+                                </Col>
+                            <Col md={12}>
+                                <Table
+                                rowClassName = { this.setClassName }
+                                onRowClick = { this.onDataSelect }
+                                columns={this.columns}
+                                data={this.state.tableSearchValue == '' ? data : this.state.tableSearchData }
+                                />
+                            </Col>
+                           </Row>
+                               <Pagination
+                               style={{ float: 'right'}}
+                               prev
+                               next
+                               boundaryLinks
+                               items={20}
+                               maxButtons={5}
+                               activePage={this.state.activePage}
+                               onSelect={this.handlePageSelect.bind(this)} />
                            </Col>
                        </div>
                    </TabPane>
@@ -3304,8 +3437,19 @@ class Demo1 extends Component {
 
                    </Modal.Body>
                    <Modal.Footer>
-                        <Button onClick={ this.ensure } colors="primary" style={{ marginRight: 50 }}> 确认 </Button>
-                       <Button onClick={ this.close }> 关闭 </Button>
+                   <div style={{ textAlign: 'left'}}>
+                    <span style={{ padding: "5px 10px" }}>已选数据:</span>
+                    <span>{
+                        this.state.selectValue.map(function (item, index) {
+                            return (<span key={index} style={{ display: 'inline-block',padding: "2px 2px 2px 10px", background: '#f5f5f5', border: "1px solid gray", borderRadius: '5px', margin: '0 5px' }}>{item}<Icon style={{ marginLeft: 5, fontSize: 14, color: "gray", cursor: 'pointer'}} type="uf-close" onClick={self.deleteSelect(index)}></Icon></span>)
+                    })}</span>
+                   </div>
+                   <div>
+                   <Button onClick={ this.empty }> 清空 </Button>
+                   <Button onClick={ this.ensure } colors="primary" style={{ margin: "0 30px" }}> 确认 </Button>
+                   <Button onClick={ this.close }> 关闭 </Button>
+                   </div>
+
                    </Modal.Footer>
                </Modal>
             </Row>

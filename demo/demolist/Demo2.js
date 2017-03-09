@@ -89,7 +89,7 @@ class Demo2 extends Component {
         return <span style={{ cursor: 'pointer' }} onClick={this.handleAdd(record)}><Icon type="uf-plus"></Icon>添加到常用</span>;
     }
     renderDelete (text, record, index) {
-         return <Popconfirm content="确认删除?" onClose={this.handleDelete(index)}>
+         return <Popconfirm content="确认删除?" onClick={e=>e.stopPropagation()} onClose={this.handleDelete(index)}>
             <span>
             <Icon type="uf-del"></Icon>
             删除
@@ -103,12 +103,13 @@ class Demo2 extends Component {
     }
     handleAdd (record) {
         const self = this;
-        return function () {
+        return function (e) {
             let data = self.state.commonData;
             data.push(record);
             self.setState({
                 commonData: data
-            })
+            });
+            e.stopPropagation();
         }
     }
     handleDelete (index) {
@@ -140,10 +141,10 @@ class Demo2 extends Component {
     render () {
         const { data, commonData } = this.state;
         data.forEach(function (item, index) {
-            data.key = index;
+            item.key = index;
         });
         commonData.forEach(function (item, index) {
-            commonData.key = index;
+            item.key = index;
         });
         return (
             <Row>

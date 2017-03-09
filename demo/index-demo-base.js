@@ -5,7 +5,7 @@ import Button from 'bee-button';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Reference from '../src';
-import { FormControl, Modal, Label, Tree, Table, FormGroup, Icon, Popconfirm } from 'tinper-bee';
+import { FormControl, Modal, Label, Tree, Table, FormGroup, Icon, Popconfirm, Pagination, InputGroup } from 'tinper-bee';
 import Tabs, { TabPane } from 'rc-tabs';
 import TabContent from 'rc-tabs/lib/TabContent';
 import ScrollableInkTabBar from 'rc-tabs/lib/ScrollableInkTabBar';
